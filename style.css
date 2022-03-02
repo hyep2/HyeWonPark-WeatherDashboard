@@ -1,0 +1,15 @@
+header {
+  background-color: rgb(113, 188, 223);
+  color: white;
+  text-align: center;
+  font-size: xx-large
+}
+
+.col-auto {
+  margin-left: -6rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 8rem;
+  padding:10px
+}
