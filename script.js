@@ -15,23 +15,42 @@ document.getElementById('submitBtn').addEventListener("click", event => {
     .then(function (data) {
       let lon = data.city.coord['lon']
       let lat = data.city.coord['lat']
+      console.log(data);
       //current weather api url
       let currentUrl = 'https://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + '&appid=' + apiKey;
 
       let fiveDaysUrl = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&appid=' + apiKey;
 
-      fetch(currentUrl)
+
+      //fetching for current and next five days data
+      fetch(fiveDaysUrl)
         .then(res => {
           return res.json();
         })
-        .then(curr_data => {
-          //THEN I am presented with the city name, the date, an icon representation of weather conditions, the temperature, the humidity, the wind speed, and the UV index
-
-          console.log(curr_data)
-          let curr_temp = 1.8 * (curr_data.main['temp'] - 273) + 32;
+        .then(five_data => {
+          console.log(five_data);
+          //for current day
+          let curr_temp = 1.8 * (five_data.current.temp - 273) + 32;
           let currRound = Math.round((curr_temp + Number.EPSILON) * 100) / 100
-          let curr_humidity = curr_data.main['humidity'];
-          let curr_wind = curr_data.wind['speed'];
+          let curr_humidity = five_data.current.humidity;
+          let curr_wind = five_data.current.weather.wind_speed;
+          let curr_uv = five_data.current.uvi;
+          console.log(curr_uv)
+          //adding uvi badge
+          let uviBadge = document.createElement('button');
+          uviBadge.classList.add('btn', 'btn-sm');
+          uviBadge.textContent = curr_uv;
+
+          //got this idea of using bootstrap colored buttons from main
+          if (curr_uv < 3) {
+            uviBadge.classList.add('btn-success');
+          } else if (curr_uv < 7) {
+            uviBadge.classList.add('btn-warning');
+          } else {
+            uviBadge.classList.add('btn-danger');
+          }
+          uviBadge.textContent = curr_uv
+
 
           //for the current weather display
           document.getElementById("currentCityDate").textContent = cityName + " " + moment().format("[(]MM/DD/YYYY[)]");
@@ -39,17 +58,9 @@ document.getElementById('submitBtn').addEventListener("click", event => {
           document.getElementById("currentWind").textContent = "Wind: " + curr_wind + " MPH";
           document.getElementById("currentHumidity").textContent = "Humidity " + curr_humidity + " %";
           document.getElementById("currentUV").textContent = "UV index: ";
-        })
-        .catch(function (err) {
-          console.error(err);
-        });
+          document.getElementById('currentUV').append(uviBadge);
 
-      fetch(fiveDaysUrl)
-        .then(res => {
-          return res.json();
-        })
-        .then(five_data => {
-          console.log(five_data.daily);
+
           //getting days 1-5 after current day 0
           for (let i = 1; i < 6; i++) {
             let mainDiv = document.getElementById("week");
@@ -58,9 +69,9 @@ document.getElementById('submitBtn').addEventListener("click", event => {
             dayDiv.classList.add('weekChild');
 
             //need to add header too with the dates and image
-            
+
             let tomorrow = moment().add(i, 'days').format('MM/DD/YYYY');
-            
+
 
             let headEl = document.createElement('h3');
             let minEl = document.createElement('p');
@@ -70,7 +81,7 @@ document.getElementById('submitBtn').addEventListener("click", event => {
 
 
             //adding values 
-            headEl.textContent=tomorrow;
+            headEl.textContent = tomorrow;
             let min = 1.8 * (five_data.daily[i].temp.min - 273) + 32;
             let minRound = Math.round((min + Number.EPSILON) * 100) / 100
             let max = 1.8 * (five_data.daily[i].temp.max - 273) + 32;
@@ -90,12 +101,9 @@ document.getElementById('submitBtn').addEventListener("click", event => {
 
           }
         })
-        
 
 
-      // console.log(data)
-      // console.log(1.8 * ((data.list[0].main.temp) - 273) + 32)
-      // console.log(data.list[0].main.humidity)
+
     })
     .catch(function (err) {
       console.error(err);
@@ -105,35 +113,3 @@ document.getElementById('submitBtn').addEventListener("click", event => {
 
 
 
-
-
-
-//     .then(function (res) {
-//       return res.json();
-//     })
-//     .then(function (data) {
-//       renderItems(city, data);
-//     })
-//     .catch(function (err) {
-//       console.error(err);
-//     });
-
-// function fetchCoords(search) {
-//   var apiUrl = `${weatherApiRootUrl}/geo/1.0/direct?q=${search}&limit=5&appid=${weatherApiKey}`;
-
-//   fetch(apiUrl)
-//     .then(function (res) {
-//       return res.json();
-//     })
-//     .then(function (data) {
-//       if (!data[0]) {
-//         alert('Location not found');
-//       } else {
-//         appendToHistory(search);
-//         fetchWeather(data[0]);
-//       }
-//     })
-//     .catch(function (err) {
-//       console.error(err);
-//     });
-// }
