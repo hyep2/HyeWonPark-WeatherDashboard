@@ -1,15 +1,35 @@
 //need to add if statement for cityinput =null;
 
+let cityName = "";
 document.getElementById('submitBtn').addEventListener("click", event => {
   event.preventDefault();
-  
 
-  let cityName = document.getElementById('cityInput').value;
+  //refreshing every time you submit a new city
+  refresh();
+
+  cityName = document.getElementById('cityInput').value;
   localStorage.setItem('city', cityName);
   let history = document.getElementById('buttonRef');
   let historyBtn = document.createElement('button');
-  historyBtn.innerHTML= cityName;
+  historyBtn.innerHTML = cityName;
   history.append(historyBtn);
+  historyBtn.addEventListener('click', event => {
+    event.preventDefault();
+    cityName = historyBtn.innerHTML;
+    refresh();
+    displayWeather();
+  })
+
+
+  displayWeather();
+
+}
+)
+
+
+//this fxn is for fetching all the data and displaying all the data output
+function displayWeather() {
+
 
   let apiKey = 'ae5d20128353d0f3fbf8bec684d4d5c1'
 
@@ -24,7 +44,6 @@ document.getElementById('submitBtn').addEventListener("click", event => {
     .then(function (data) {
       let lon = data.city.coord['lon']
       let lat = data.city.coord['lat']
-      console.log(data);
       //current weather api url
       let currentUrl = 'https://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + '&appid=' + apiKey;
 
@@ -37,7 +56,6 @@ document.getElementById('submitBtn').addEventListener("click", event => {
           return res.json();
         })
         .then(five_data => {
-          console.log(five_data);
           //for current day
           let curr_temp = 1.8 * (five_data.current.temp - 273) + 32;
           let currRound = Math.round((curr_temp + Number.EPSILON) * 100) / 100
@@ -74,7 +92,7 @@ document.getElementById('submitBtn').addEventListener("click", event => {
           document.getElementById("currentUV").textContent = "UV index: ";
           document.getElementById('currentUV').append(uviBadge);
 
-          document.getElementById('today').style.visibility ="visible";
+          document.getElementById('today').style.visibility = "visible";
 
           //getting days 1-5 after current day 0
           for (let i = 1; i < 6; i++) {
@@ -86,7 +104,7 @@ document.getElementById('submitBtn').addEventListener("click", event => {
 
             let dayDiv = document.createElement('div');
             let iconDiv = document.createElement('div');
-            
+
             //need to add header too with the dates and image
 
             let tomorrow = moment().add(i, 'days').format('MM/DD/YYYY');
@@ -98,7 +116,7 @@ document.getElementById('submitBtn').addEventListener("click", event => {
             let windEl = document.createElement('p');
             let humidityEl = document.createElement('p');
             let iconEl = document.createElement('img')
-            
+
             //icon for the five day weather
             let iconsrc = five_data.daily[i].weather[0].icon;
             let fivesource = "http://openweathermap.org/img/wn/" + iconsrc + "@4x.png"
@@ -126,7 +144,7 @@ document.getElementById('submitBtn').addEventListener("click", event => {
             bigDay.append(iconDiv);
 
             mainDiv.append(bigDay);
-      
+
 
           }
         })
@@ -135,16 +153,15 @@ document.getElementById('submitBtn').addEventListener("click", event => {
 
     })
 }
-)
 
+//this fxn is for refreshing every time there is a new city input
 function refresh() {
-  let x=document.getElementById("week");
-  if(x.childElementCount!=0) {
-    x.removeChild();
-  }
-  else {
-    return;
-  }
+  removeChilds(document.getElementById("week"));
+  removeChilds(document.getElementById('todayIcon'));
 }
 
-
+const removeChilds = (parent) => {
+  while (parent.lastChild) {
+    parent.removeChild(parent.lastChild);
+  }
+};
