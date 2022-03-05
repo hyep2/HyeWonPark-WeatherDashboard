@@ -7,11 +7,12 @@ The function of this app is to provide the user with the current weather, along 
 ## ALGORITHM 
 ```
 
-1. Set up a basic HTML and CSS page to begin the project
-2. Set up basic JS to begin the project
-3. Connect APIs 
-4. Build Carousel funcionality
-5. Build search bar funcionality w/ API
+1. Set up a basic HTML and CSS page (div boxes)
+2. Set up basic JS (building search bar, buttons)
+3. Connect APIs and fetch data
+4. Build search bar funcionality w/ API
+5. Set up search history via local storage
+6. Create function to refresh data when new city input is called
 ```
 
 ## LINK TO DEPLOYED APP 
