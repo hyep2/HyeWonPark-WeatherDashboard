@@ -16,6 +16,7 @@ The function of this app is to provide the user with the current weather, along 
 ```
 
 ## LINK TO DEPLOYED APP 
+https://hyep2.github.io/HyeWonPark-WeatherDashboard/
 
 ![app picture](./weatherpic.png)
 
