@@ -71,9 +71,13 @@ document.getElementById('submitBtn').addEventListener("click", event => {
           for (let i = 1; i < 6; i++) {
             let mainDiv = document.getElementById("week");
 
-            let dayDiv = document.createElement('div');
-            dayDiv.classList.add('weekChild');
+            // this div contains daydiv (has the weather info) and icondiv (has the weather icon)
+            let bigDay = document.createElement('div')
+            bigDay.classList.add('bigDayChild');
 
+            let dayDiv = document.createElement('div');
+            let iconDiv = document.createElement('div');
+            =
             //need to add header too with the dates and image
 
             let tomorrow = moment().add(i, 'days').format('MM/DD/YYYY');
@@ -84,7 +88,12 @@ document.getElementById('submitBtn').addEventListener("click", event => {
             let maxEl = document.createElement('p');
             let windEl = document.createElement('p');
             let humidityEl = document.createElement('p');
-
+            let iconEl = document.createElement('img')
+            
+            //icon for the five day weather
+            let iconsrc = five_data.daily[i].weather[0].icon;
+            let fivesource = "http://openweathermap.org/img/wn/" + iconsrc + "@4x.png"
+            iconEl.setAttribute('src', fivesource);
 
             //adding values 
             headEl.textContent = tomorrow;
@@ -102,8 +111,13 @@ document.getElementById('submitBtn').addEventListener("click", event => {
             dayDiv.append(maxEl);
             dayDiv.append(windEl);
             dayDiv.append(humidityEl);
+            iconDiv.append(iconEl);
 
-            mainDiv.append(dayDiv);
+            bigDay.append(dayDiv);
+            bigDay.append(iconDiv);
+
+            mainDiv.append(bigDay);
+      
 
           }
         })

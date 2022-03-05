@@ -1,5 +1,11 @@
+body {
+  /* background-color: rgb(13, 11, 90); */
+  background-color: rgb(136, 135, 150);
+
+}
+
 header {
-  background-color: rgb(113, 188, 223);
+  background-color: rgb(47, 51, 53);
   color: white;
   text-align: center;
   font-size: xx-large
@@ -20,18 +26,27 @@ header {
   padding: 10px;
   height: 15rem;
   display: flex;
+  background-color: white;
 }
+
+
 
 #week {
   display: flex;
+  flex-direction: column;
   justify-content: space-evenly;
 
 
 }
 
-.weekChild {
+
+
+.bigDayChild {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
   border-style: solid;
-  width: auto ;
-  background-color: rgb(13, 11, 90);
-  color:white;
+  border-color: grey;
+  width: auto;
+  background-color: white;
 }
