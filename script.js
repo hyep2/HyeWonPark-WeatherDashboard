@@ -32,10 +32,10 @@ document.getElementById('submitBtn').addEventListener("click", event => {
           //for current day
           let curr_temp = 1.8 * (five_data.current.temp - 273) + 32;
           let currRound = Math.round((curr_temp + Number.EPSILON) * 100) / 100
+          let icon = five_data.current.weather[0].icon;
           let curr_humidity = five_data.current.humidity;
           let curr_wind = five_data.current.weather.wind_speed;
           let curr_uv = five_data.current.uvi;
-          console.log(curr_uv)
           //adding uvi badge
           let uviBadge = document.createElement('button');
           uviBadge.classList.add('btn', 'btn-sm');
@@ -51,6 +51,11 @@ document.getElementById('submitBtn').addEventListener("click", event => {
           }
           uviBadge.textContent = curr_uv
 
+          //appending icon image
+          let image = document.createElement('img');
+          let source = "http://openweathermap.org/img/wn/" + icon + "@4x.png";
+          image.setAttribute('src', source);
+          document.getElementById('todayIcon').append(image);
 
           //for the current weather display
           document.getElementById("currentCityDate").textContent = cityName + " " + moment().format("[(]MM/DD/YYYY[)]");
@@ -60,6 +65,7 @@ document.getElementById('submitBtn').addEventListener("click", event => {
           document.getElementById("currentUV").textContent = "UV index: ";
           document.getElementById('currentUV').append(uviBadge);
 
+          document.getElementById('today').style.visibility ="visible";
 
           //getting days 1-5 after current day 0
           for (let i = 1; i < 6; i++) {
@@ -105,9 +111,6 @@ document.getElementById('submitBtn').addEventListener("click", event => {
 
 
     })
-    .catch(function (err) {
-      console.error(err);
-    });
 }
 )
 
